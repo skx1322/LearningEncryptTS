@@ -18,16 +18,23 @@ bun i
 ```
 ### The only library we have used so far are just the Bun, Typescript and Dotenv.
 
-3. As of the currently, I have neither implement the main index nor implement the backend framework yet you're only able to test function as of the currently in the index.ts. Further detail will be added soon. 🎈
+3. Once all neccesary libraries are installed, head to your server and run the main index.ts inside src by watch. 
 
 ```
-bun run index.ts 
+bun run dev
 ```
+
+4. It'll show you a web url with the localhost running on port 3000 by default(You can customize the port in .env file). Click or use the url as provided and you'll be lead to the webiste
+
+```
+http://localhost:3000/
+```
+![alt text](./image/image-2.png)
 
 ### ⚠ WORK IN PROGRESS 🔨
 
 ## OPTIONAL ENV
-1. If you want to test out the secret_key, you can set it up in the .env prop file.
+1. If you want to configure your hosting port, you can set it up in the .env prop file.
 
 Terminal:
 ```
@@ -36,7 +43,7 @@ mkdir .env
 
 .env:
 ```
-SECRET_KEY = "JUSTLIBRARY"
+PORT = 8000 
 ```
 
 index.ts:
@@ -44,42 +51,12 @@ index.ts:
 const key = process.env.SECRET_KEY
 ```
 
-# List of Feature
-## Main-Function from utils>ImageConfig.ts
-1. Single-Stream Image to Encrypted String
-- Ensure you have a file in the "./storage/image/"
-### Sample Code to Run in index.ts
-```
-    // Declare Object-Variable
-    const ImagePayload = {
-    FileName: "FuHua35.png", // Placeholder Image
-    InitialPoint: "./storage/image/",
-    EndPoint: "./storage/encrypted/",
-    Format: "png",
-    CustomOutput: "OutputImage_1322", // Optional
-    Encrypt: true, 
-    SecretKey: key, // optional
-    };
-
-    ImageCip(ImagePayload); // Pass In Object-Variable
-```
-
-2. Single-Stream Decrypt String to Image
-- Ensure you have a file in the "./storage/image/"
-### Sample Code to Run in index.ts
-```
-    // Declare Object-Variable
-    const ImagePayload: FileObject = {
-    FileName: "FuHua35.txt", // Placeholder Text
-    InitialPoint: "./storage/encrypted/",
-    EndPoint: "./storage/recover/",
-    Format: "png",
-    CustomOutput: "OutputImage_1322", // also optional
-    Encrypt: true, 
-    SecretKey: key, // optional
-    };
-
-    CipText(ImagePayload); // Pass In Object-Variable
-```
-
 ### MORE WORK IN PROGRESS 🎞
+
+### Expected Interface (Work in Progress 🔨 ding ding)
+![alt text](./image/image.png)
+
+## Current Feature:
+1. Upload Image
+- Ensure you select a folder before you upload one and make sure you remember your passkey. 🎇
+![alt text](./image/image-1.png)
