@@ -118,18 +118,19 @@ export const upload = new Elysia()
             fileDirectory: t.String(),
         })
     })
-    .post('/api/uploadImage', async ({ body, set }) => {
+    .post('/api/uploadImage', async ({ body, set, redirect }) => {
         const { name, file, passKey, fileDirectory } = body;
-
+        console.log(body);
         interface FileReturn {
             directory: string,
             fileType: fileFormat,
             fileSize: number,
             uploaded: boolean,
         }
+        const fileName = name || (file.name).replace(".", "_");
         try {
             const filePayload = {
-                name: name,
+                name: fileName,
                 file: file,
                 directory: fileDirectory,
             }
@@ -146,22 +147,21 @@ export const upload = new Elysia()
             }
             const { directory, fileType, fileSize } = uploaded
             const cryptoPayload: FileObject = {
-                FileName: `${name}.${fileType}`,
+                FileName: `${fileName}.${fileType}`,
                 InitialPoint: fileDirectory,
                 EndPoint: directory,
                 Format: "txt",
-                CustomOutput: name,
+                CustomOutput: fileName,
                 Encrypt: true,
                 SecretKey: passKey,
             }
-            await ImageCip(cryptoPayload);
-            set.status = 200;
-            return {
-                success: true,
-                message: "Successfully stored image.",
-                status: set.status,
-                output: cryptoPayload.FileName,
+            const success: boolean = await ImageCip(cryptoPayload);
+            if(!success){
+                console.error("Failed to upload data.")
+                return redirect(`http://localhost:3000/uploadPage?folder=${fileDirectory}`)
             }
+            set.status = 200;
+            return redirect(`http://localhost:3000/uploadPage?folder=${fileDirectory}`)
         } catch (error) {
             set.status = 500;
             return {
@@ -173,7 +173,7 @@ export const upload = new Elysia()
         }
     }, {
         body: t.Object({
-            name: t.String(),
+            name: t.Optional(t.String()),
             file: t.File(),
             passKey: t.Optional(t.String()),
             fileDirectory: t.String(),
