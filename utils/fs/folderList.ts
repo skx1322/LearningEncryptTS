@@ -1,5 +1,5 @@
 import { readdirSync, statSync } from "fs";
-import { join } from "path";
+import path, { join } from "path";
 import { readdir } from "fs/promises";
 import { lstat } from "fs/promises";
 
@@ -8,7 +8,8 @@ interface FileObject {
   fileDate: string,
   fileSize: number,
   fileDirectory: string,
-  fileReceived: boolean;
+  fileReceived: boolean,
+  isLocked: boolean,
 }
 
 export async function getFilesInFolder(folderPath: string): Promise<FileObject[]> {
@@ -16,13 +17,15 @@ export async function getFilesInFolder(folderPath: string): Promise<FileObject[]
     const items = readdirSync(`./storage/${folderPath}/`);
     const fileObjects: FileObject[] = items.map(file => {
       const fullPath = `./storage/${folderPath}/${file}`;
+      const fileExtension = path.extname(file).toLocaleLowerCase();
       const stats = statSync(fullPath)
       return {
         fileName: file,
-        fileDate: stats.mtime.toISOString(), 
+        fileDate: stats.mtime.toLocaleString(), 
         fileSize: stats.size, 
         fileDirectory: fullPath, 
         fileReceived: true,
+        isLocked: fileExtension === ".txt",
       };
 
     })

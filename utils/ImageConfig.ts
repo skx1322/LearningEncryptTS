@@ -24,7 +24,7 @@ interface FolderObject {
     SecretKey?: string,
 }
 
-export async function ImageCip(File: FileObject): Promise<void> {
+export async function ImageCip(File: FileObject): Promise<boolean> {
     const {FileName, InitialPoint, EndPoint, Format, CustomOutput, Encrypt, SecretKey} = File
     try {
         const fullPath = join(`./storage/${InitialPoint}`, FileName)
@@ -36,12 +36,14 @@ export async function ImageCip(File: FileObject): Promise<void> {
             console.error(`Failed to process image to text`)
         }
         await DeleteFile(fullPath);
+        return true;
     } catch (error) {
         console.error(`Failed to encrypt content ${error}`)
+        return false;
     }
 }
 
-export async function CipText(File: FileObject): Promise<void> {
+export async function CipText(File: FileObject): Promise<boolean> {
     const {FileName, InitialPoint, EndPoint, Format, Encrypt, SecretKey} = File
     try {
         const fullPath = join(InitialPoint, FileName);
@@ -51,8 +53,10 @@ export async function CipText(File: FileObject): Promise<void> {
             console.error(`Failed to process image to text`)
         }
         await DeleteFile(`${InitialPoint}${FileName}`)
+        return true;
     } catch (error) {
         console.error(`Failed to decrypt content ${error}`)
+        return false;
     }
 }
 
