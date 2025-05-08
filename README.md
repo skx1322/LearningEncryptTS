@@ -60,3 +60,10 @@ const key = process.env.SECRET_KEY
 1. Upload Image
 - Ensure you select a folder before you upload one and make sure you remember your passkey. 🎇
 ![alt text](./image/image-1.png)
+
+## Feature work in progress:
+1. Create folder
+2. Decrypt image in folder
+3. Decrypt multiple images in folder
+4. Encrypt image manually
+5. Upload multiple images

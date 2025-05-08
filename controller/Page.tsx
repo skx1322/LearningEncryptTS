@@ -29,6 +29,7 @@ export const home = new Elysia()
             </section>
             <script>
               {`
+              
                 window.toggleDropdown = function(index) {
                   document.querySelectorAll("[id^='dropdown-']").forEach(el => {
                     if (!el.classList.contains("hidden")) {
