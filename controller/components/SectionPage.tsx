@@ -5,7 +5,7 @@ import { readFileByte } from "../../utils/fs/ReadFileSize";
 export function HeadSection() {
   return (
     <head>
-      <title>Hello World</title>
+      <title>Ciphering</title>
       <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
       <script
         src="https://kit.fontawesome.com/cb35bc25b0.js"
@@ -24,12 +24,12 @@ export function Sidebar() {
       >
         <i class="fa-solid fa-user-lock"></i>
       </a>
-      <a
+      {/* <a
         href="/"
         class="text-2xl text-white px-10 py-2 transform transistion-normal duration-500 hover:bg-blue-600 mt-4"
       >
         <i class="fa-solid fa-user"></i>
-      </a>
+      </a> */}
       <a
         href="/uploadPage"
         class="text-2xl text-white px-10 py-2 transform transistion-normal duration-500 hover:bg-blue-600 mt-4"
@@ -88,7 +88,7 @@ export function MainContent({ folders }: { folders: FolderData[] }) {
           </form>
         </div>
       </div>
-      <section class="grid grid-cols-4 p-4 gap-12">
+      <section class="flex not-md:flex-col p-4 gap-12">
         {folders.map((data, index: number) => (
           <div class="rounded-2xl h-auto bg-gray-200 p-6 flex justify-center items-stretch flex flex-col relative">
             <div class="flex justify-between items-center">
@@ -118,8 +118,11 @@ export function MainContent({ folders }: { folders: FolderData[] }) {
               <button class="text-xl transform transistion-normal duration-300 hover:bg-gray-400 px-8 py-2 cursor-pointer">
                 Download
               </button>
-              <button class="text-xl transform transistion-normal duration-300 hover:bg-red-400 px-8 py-2 cursor-pointer border-t-2 border-gray-500"
-              type="button"
+              <button
+                class="text-xl transform transistion-normal duration-300 hover:bg-red-400 px-8 py-2 cursor-pointer border-t-2 border-gray-500"
+                type="button"
+                data-folder={data.folderDirectory}
+                onclick="deleteFolder(this)"
               >
                 Delete
               </button>
@@ -129,45 +132,70 @@ export function MainContent({ folders }: { folders: FolderData[] }) {
       </section>
       <script>
         {`
-          document.addEventListener("click", (event) => {
-            const folderDiv = document.getElementById("folderDiv");
+          async function deleteFolder(button) {
+          const folderDirectory = button.getAttribute("data-folder");
 
-            if (
-              folderDiv &&
-              !folderDiv.contains(event.target) && 
-              event.target !== document.getElementById("createFolder")
-            ) {
-              folderDiv.classList.add("hidden");
-            }
+          const confirmDelete = confirm("Are you sure you want to delete the folder?");
+          if (!confirmDelete) return;
+
+          const res = await fetch("/api/deleteFolder", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ folderDirectory })
           });
 
-            document.getElementById("createFolder")?.addEventListener("click", () => {
-            const folderDiv = document.getElementById("folderDiv");
-            folderDiv?.classList.remove("hidden");
+          if (res.ok) {
+            alert("Folder deleted!");
+            location.reload();
+          } else {
+            alert("Failed to delete folder.");
+          }
+        }
+        `}
+      </script>
+      <script>
+        {`
+            document.addEventListener("click", (event) => {
+              const folderDiv = document.getElementById("folderDiv");
+
+              if (
+                folderDiv &&
+                !folderDiv.contains(event.target) && 
+                event.target !== document.getElementById("createFolder")
+              ) {
+                folderDiv.classList.add("hidden");
+              }
+            });
+
+              document.getElementById("createFolder")?.addEventListener("click", () => {
+              const folderDiv = document.getElementById("folderDiv");
+              folderDiv?.classList.remove("hidden");
+            });
+
+
+            document.getElementById("addFolder")?.addEventListener("click", () => {
+            document.getElementById("folderForm")?.submit();
           });
 
+            document.getElementById("folderForm")?.addEventListener("submit", async (event) => {
+            // event.preventDefault(); 
 
-          document.getElementById("addFolder")?.addEventListener("click", () => {
-          document.getElementById("folderForm")?.submit();
-        });
+            const folderName = document.getElementById("folderName").value; 
+            console.log(folderName);
+            const response = await fetch("http://localhost:3000/api/createFolder", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name: folderName }),
+            });
 
-          document.getElementById("folderForm")?.addEventListener("submit", async (event) => {
-          // event.preventDefault(); 
-
-          const folderName = document.getElementById("folderName").value; 
-          console.log(folderName);
-          const response = await fetch("http://localhost:3000/api/createFolder", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: folderName }),
-          });
-
-            if (response.ok) {
-              console.log("Folder created successfully");
-            } else {
-              console.error("Error creating folder");
-            }
-          });
+              if (response.ok) {
+                console.log("Folder created successfully");
+              } else {
+                console.error("Error creating folder");
+              }
+            });
 
           `}
       </script>
@@ -185,6 +213,8 @@ interface FileObject {
 }
 
 export function DirectoryContent({ files }: { files: FileObject[] }) {
+  const folderView = `absolute`;
+
   return (
     <div class="bg-gray-100 p-6 grow-2">
       <a
@@ -195,18 +225,83 @@ export function DirectoryContent({ files }: { files: FileObject[] }) {
       </a>
       <p class="text-2xl mt-4">Files</p>
       <section class="flex p-4 gap-12">
-        {files.map((data) => (
-          <div class="rounded-2xl h-auto bg-gray-200 cursor-pointer p-6 flex justify-between items-stretch flex flex-col transform transistion-normal duration-500 hover:bg-blue-600 hover:text-white">
-            <div class="text-3xl flex justify-between">
+        {files.map((data, index) => (
+          <div class="rounded-2xl h-auto bg-gray-200 p-6 flex justify-between items-stretch flex flex-col relative">
+            <div class="text-2xl flex justify-between">
               <i class="fa-solid fa-image"></i>
-              <i class="fa-solid fa-ellipsis-vertical"></i>
+              <i
+                class="fa-solid fa-ellipsis text-2xl transform transistion-normal duration-300 rounded-xl hover:bg-gray-300 p-1 cursor-pointer"
+                onclick={`toggleDropdown(${index})`}
+              ></i>
             </div>
             <p class="text-xl">File Size: {data.fileName}</p>
             <p>{readFileByte(data.fileDirectory)} MB</p>
             <p>Uploaded Date: {data.fileDate}</p>
+            <div
+              class={`absolute z-10 flex flex-col bg-gray-300 gap-2 rounded translate-y-[20px] translate-x-[220px] hidden ${folderView}`}
+              id={`dropdown-${index}`}
+            >
+              <a class="text-xl transform transistion-normal duration-300 hover:bg-gray-400 px-8 py-2 cursor-pointer"
+              href={`/preview/${data.fileDirectory}`}
+              >
+                Preview
+              </a>
+              <button class="text-xl transform transistion-normal duration-300 hover:bg-gray-400 px-8 py-2 cursor-pointer"
+              file-data={data.fileDirectory}
+              onclick="decryptCall(this)"
+              >
+                {data.isLocked ? `Decrypt` : `Encrypt`}
+              </button>
+              <button class="text-xl transform transistion-normal duration-300 hover:bg-gray-400 px-8 py-2 cursor-pointer">
+                Download
+              </button>
+              <button
+                class="text-xl transform transistion-normal duration-300 hover:bg-red-400 px-8 py-2 cursor-pointer border-t-2 border-gray-500"
+                type="button"
+                data-folder={data.fileDirectory}
+                onclick=""
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </section>
+      <script>
+        {
+          `
+            function decryptCall(button) {
+            const fileDirectory = button.getAttribute("file-data");
+
+            const fileType = prompt("Enter file type output: png, jpg, or gif");
+
+            const allowedTypes = ["png", "jpg", "gif"];
+            if (!allowedTypes.includes(fileType)) {
+              alert("Invalid file type! Please enter png, jpg, or gif.");
+              return;
+            }
+
+            const passKey = prompt("Enter the decryption passkey");
+
+            if (!passKey) {
+              alert("Passkey is required!");
+              return;
+            }
+
+            const body = { name, fileType, passKey, fileDirectory };
+
+            fetch("/api/cipherText", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            })
+            .then(response => response.json())
+            .then(data => alert("Decryption successful!"))
+            .catch(error => console.error("Error decrypting file:", error));
+          }
+          `
+        }
+      </script>
     </div>
   );
 }
@@ -242,7 +337,7 @@ export function UploadPage({
             onchange="handleFolderChange(event)"
             class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-gray-600 sm:text-sm/6"
           >
-            <option value="">-- Select a folder --</option>
+            <option value="" disabled selected>-- Select a folder --</option>
             {folders.map((data) => {
               const isSelected = data.folderDirectory === currentFolder;
               return (
@@ -340,10 +435,20 @@ export function UploadPage({
       </section>
       <script>
         {`
+          document.querySelector("form").addEventListener("submit", function (event) {
+          const fileDirectoryInput = document.getElementById("fileDirectory");
 
-        
+          if (!fileDirectoryInput.value.trim()) {
+            event.preventDefault(); // Stop form submission
+            alert("Please select a folder before uploading!");
+          }
+        });
           function handleFolderChange(event) {
-            const folderName = event.target.value;
+            const folderName = event.target.value.trim();
+            if(!folderName){
+              alert("Provide folder")
+              return;
+            }
             const encoded = encodeURIComponent(folderName);
             window.location.href = '/uploadPage?folder=' + encoded;
           }

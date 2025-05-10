@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { html, Html } from "@elysiajs/html";
 import { Children } from "@kitajs/html";
+
 import {
   HeadSection,
   Sidebar,
@@ -9,6 +10,7 @@ import {
   UploadPage,
 } from "./components/SectionPage";
 import { Error500 } from "./components/Error";
+
 export const home = new Elysia()
   .use(html())
   .get("/", async ({ set }) => {
@@ -29,7 +31,6 @@ export const home = new Elysia()
             </section>
             <script>
               {`
-              
                 window.toggleDropdown = function(index) {
                   document.querySelectorAll("[id^='dropdown-']").forEach(el => {
                     if (!el.classList.contains("hidden")) {
@@ -81,6 +82,34 @@ export const home = new Elysia()
                 <Sidebar></Sidebar>
                 <DirectoryContent files={FileData}></DirectoryContent>
               </section>
+                          <script>
+              {`
+                window.toggleDropdown = function(index) {
+                  document.querySelectorAll("[id^='dropdown-']").forEach(el => {
+                    if (!el.classList.contains("hidden")) {
+                      el.classList.add("hidden");
+                    }
+                  });
+                  const dropdown = document.getElementById('dropdown-' + index);
+                  if (dropdown) {
+                    dropdown.classList.toggle('hidden');
+                  }
+                  window.__activeDropdown = dropdown;
+                };
+
+                document.addEventListener('click', function(event) {
+                  const active = window.__activeDropdown;
+                  if (
+                    active &&
+                    !active.contains(event.target) &&
+                    !event.target.closest(".fa-ellipsis")
+                  ) {
+                    active.classList.add("hidden");
+                    window.__activeDropdown = null;
+                  }
+                });
+              `}
+            </script>
             </body>
           </html>
         );
@@ -95,7 +124,7 @@ export const home = new Elysia()
       }),
     }
   )
-  .get("/uploadPage", async({set, request, redirect})=>{
+  .get("/uploadPage", async({set, request})=>{
     try {
       const response = await fetch("http://localhost:3000/api/StorageFolder");
       const jsonRes = await response.json();
@@ -126,4 +155,23 @@ export const home = new Elysia()
       set.status = 401;
       return <Error500></Error500>;
     }
+  })
+  .get("/preview/:storage/:folder/:imageID", async({params, set})=>{
+    const {storage, folder, imageID} = params;
+    return(
+              <html lang="en">
+          <HeadSection />
+          <body class="bg-black flex items-center justify-center h-screen">
+            <div>
+              <img src={`/imagehost/${storage}/${folder}/${imageID}`} alt="Preview" />
+            </div>
+          </body>
+        </html>
+    )
+  },{
+    params: t.Object({
+      storage: t.String(),
+      folder: t.String(),
+      imageID: t.String()
+    })
   });

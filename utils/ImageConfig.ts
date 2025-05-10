@@ -46,13 +46,13 @@ export async function ImageCip(File: FileObject): Promise<boolean> {
 export async function CipText(File: FileObject): Promise<boolean> {
     const {FileName, InitialPoint, EndPoint, Format, Encrypt, SecretKey} = File
     try {
-        const fullPath = join(InitialPoint, FileName);
+        const fullPath = join(InitialPoint);
         const outputFileName = FileName.replace(/\.[^/.]+$/, "");
         const success = await RecoverImage(fullPath, EndPoint, Encrypt, SecretKey, Format, outputFileName)
         if (!success) {
             console.error(`Failed to process image to text`)
         }
-        await DeleteFile(`${InitialPoint}${FileName}`)
+        await DeleteFile(InitialPoint)
         return true;
     } catch (error) {
         console.error(`Failed to decrypt content ${error}`)

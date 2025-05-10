@@ -9,6 +9,8 @@ export async function RecoverImage(
     secretID?: string,
     fileFormat: fileFormat = "jpg",
     fileOutputName: string = "image"): Promise<boolean> {
+    console.log(mainRoute);
+    console.log(fileOutputName);
     try {
         const textFile = Bun.file(stringPath);
         const content = await textFile.text();
@@ -43,7 +45,7 @@ export async function RecoverImage(
         }
 
         const imageBuffer = Buffer.from(base64Text, `base64`);
-        await Bun.write(`${mainRoute}${fileOutputName}.${fileFormat}`, imageBuffer)
+        await Bun.write(`${mainRoute}.${fileFormat}`, imageBuffer)
         return true;
     } catch (error) {
         console.error(`Failed to decrypt text ${error}`)
