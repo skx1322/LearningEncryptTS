@@ -82,7 +82,7 @@ const key = process.env.SECRET_KEY
 ## Current Feature:
 1. Upload Image
 - Ensure you select a folder before you upload one and make sure you remember your passkey. 🎇
-![alt text](./image/Uplpoad1.png)
+![alt text](./image/Upload1.png)
 
 2. Preview Image 
 - You can now preview an image that has been decrypted, a locked image won't be preview at the moment.
@@ -90,11 +90,11 @@ const key = process.env.SECRET_KEY
 
 3. Decrypt Image 
 - You can now decrypt an image that has been locked, at the moment, we only utilizes HTML confirm() and alert() as I regret writing TSX in the backend.
-# First decrypt a locked image, they are txt folder 99% of the time, I plan to change this in the future
+- First decrypt a locked image, they are txt folder 99% of the time, I plan to change this in the future
 ![alt text](./image/Decrypt1.png)
-# A HTML form will appear on top and you'll have to type in the format output.
+- A HTML form will appear on top and you'll have to type in the format output.
 ![alt text](./image/FormatOutput.png)
-# Then you'll have to pass in the exact passkey to decrypt your image, at the moment it's a little buggy as I realize how bad I am at writing normal DOM javascript 💀
+- Then you'll have to pass in the exact passkey to decrypt your image, at the moment it's a little buggy as I realize how bad I am at writing normal DOM javascript 💀
 ![alt text](./image/passKey.png)
 
 4. Create Folder
