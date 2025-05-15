@@ -102,8 +102,8 @@ const key = process.env.SECRET_KEY
 ![alt text](./image/FolderCreate.png)
 
 
-## Feature work in progress:
-1. Decrypt multiple images in folder
-2. Upload multiple images
-3. Encrypt image manually
-4. Debugging known bugs
+## Work in progress:
+1. Planning out all the function flow.
+2. Design database to link with file object in localhost.
+3. Revamp everything in utility to be more consistent, I'll work a little per day, gonna do other thing too in life.
+4. Plan out client interface.
