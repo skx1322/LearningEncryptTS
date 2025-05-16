@@ -46,11 +46,43 @@ export enum FileFormatEnum {
   TXT = 'text/plain',
   ZIP = 'application/zip',
   SEVEN_Z = 'application/x-7z-compressed',
-  ENC = 'application/octet-stream',
   AES = 'application/octet-stream',
-  BIN = 'application/octet-stream',
   GZ = 'application/gz'
 }
+
+export const FileExtension = (format: FileFormat): string => {
+  return format.split(`/`)[1]
+}
+
+export const reverseExtension = (extension: string): FileFormatEnum => {
+    const formatMap: Record<string, FileFormatEnum> = {
+        png: FileFormatEnum.PNG,
+        jpeg: FileFormatEnum.JPEG,
+        jpg: FileFormatEnum.JPEG, 
+        gif: FileFormatEnum.GIF,
+        txt: FileFormatEnum.TXT,
+        zip: FileFormatEnum.ZIP,
+        "7z": FileFormatEnum.SEVEN_Z,
+        aes: FileFormatEnum.AES,
+        gz: FileFormatEnum.GZ,
+    };
+    return formatMap[extension.toLowerCase()] || FileFormatEnum.AES; 
+};
+
+export const getExtension = (format: FileFormatEnum): string => {
+    const mapping: Record<FileFormatEnum, string> = {
+        [FileFormatEnum.PNG]: "png",
+        [FileFormatEnum.JPEG]: "jpg",
+        [FileFormatEnum.GIF]: "gif",
+        [FileFormatEnum.TXT]: "txt",
+        [FileFormatEnum.ZIP]: "zip",
+        [FileFormatEnum.SEVEN_Z]: "7z",
+        [FileFormatEnum.AES]: "aes",
+        [FileFormatEnum.GZ]: "gz",
+    };
+    return mapping[format] || "dat"; 
+};
+
 
 export interface CryptoGenSchema {
   FileBuffer: string,
@@ -79,17 +111,4 @@ export interface FileCryptoSchema {
   fileParentDirectory: string,
   secretKey?: string,
   fileFullDirectory?: string,
-}
-
-export interface FileCryptoOutput {
-  error: boolean,
-  success: boolean,
-  message: string,
-  fileName: string,
-  fileID: string,
-  fileFormat: FileFormat,
-  fileMainDirectory: string,
-  fileParentDirectory: string,
-  fileFullDirectory: string,
-  secretKey?: string
 }

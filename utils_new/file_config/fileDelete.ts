@@ -29,3 +29,7 @@ export async function fileDeleteDirect(filePath: string): Promise<StandardFSObje
         }
     }
 }
+
+export async function fileDeleteSearch() {
+    
+}
