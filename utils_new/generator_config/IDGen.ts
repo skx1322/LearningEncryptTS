@@ -11,4 +11,4 @@ export async function UUIDHex(GenType: UUIDFormat = "hex", SegmentLength: Segmen
     return idSegment.slice(SegmentLength, 5).join("-")
 }
 
-console.log(await UUIDHex());
+console.log(await UUIDHex("hex", 3));

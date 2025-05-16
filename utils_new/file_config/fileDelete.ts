@@ -1,6 +1,6 @@
 import { StandardFSObject } from "../fileFormatTempalte";
 
-export async function fileDelteDirect(filePath: string): Promise<StandardFSObject> {
+export async function fileDeleteDirect(filePath: string): Promise<StandardFSObject> {
     try {
         const file = Bun.file(filePath)
         const checker: boolean = await file.exists();

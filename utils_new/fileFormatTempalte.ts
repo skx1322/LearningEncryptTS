@@ -8,7 +8,10 @@ export type FileFormat =
   | 'application/octet-stream'
   | 'application/gz';
 
-export type UUIDFormat = | "hex" | "base64" | "base64url";
+export type UUIDFormat =
+  | "hex"
+  | "base64"
+  | "base64url";
 
 export type SegmentLimit = 0 | 1 | 2 | 3 | 4;
 
@@ -47,4 +50,46 @@ export enum FileFormatEnum {
   AES = 'application/octet-stream',
   BIN = 'application/octet-stream',
   GZ = 'application/gz'
+}
+
+export interface CryptoGenSchema {
+  FileBuffer: string,
+  KeyString: Buffer,
+  IV: Buffer,
+}
+
+export interface EncryptFileSchema {
+  EncryptedString: string,
+  IV: Buffer,
+  Tag: Buffer,
+}
+
+export interface DecryptFileSchema {
+  EncryptedString: string,
+  Key: Buffer,
+  IV: Buffer,
+  Tag: Buffer,
+}
+
+export interface FileCryptoSchema {
+  fileName: string,
+  fileID: string,
+  fileFormat: FileFormat,
+  fileMainDirectory: string,
+  fileParentDirectory: string,
+  secretKey?: string,
+  fileFullDirectory?: string,
+}
+
+export interface FileCryptoOutput {
+  error: boolean,
+  success: boolean,
+  message: string,
+  fileName: string,
+  fileID: string,
+  fileFormat: FileFormat,
+  fileMainDirectory: string,
+  fileParentDirectory: string,
+  fileFullDirectory: string,
+  secretKey?: string
 }
