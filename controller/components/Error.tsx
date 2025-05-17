@@ -8,7 +8,7 @@ export function Error500() {
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
       </head>
       <body>
-        <h1>Error</h1>
+        <h1>Error Issue</h1>
       </body>
     </html>
   );

@@ -180,11 +180,11 @@ export function MainContent({ folders }: { folders: FolderData[] }) {
           });
 
             document.getElementById("folderForm")?.addEventListener("submit", async (event) => {
-            // event.preventDefault(); 
+            event.preventDefault(); 
 
             const folderName = document.getElementById("folderName").value; 
             console.log(folderName);
-            const response = await fetch("http://localhost:3000/api/createFolder", {
+            const response = await fetch("/api/createFolder", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ name: folderName }),

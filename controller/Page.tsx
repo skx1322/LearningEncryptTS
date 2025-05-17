@@ -15,7 +15,7 @@ export const home = new Elysia()
   .use(html())
   .get("/", async ({ set }) => {
     try {
-      const response = await fetch("http://localhost:3000/api/StorageFolder");
+      const response = await fetch(`http://localhost:${process.env.PORT || 3000}/api/StorageFolder`);
       const jsonRes = await response.json();
       const FolderData = jsonRes.success ? jsonRes.output : [];
 
@@ -69,7 +69,7 @@ export const home = new Elysia()
       const { id } = params;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/listFile/${id}`
+          `http://localhost:${process.env.PORT || 3000}/api/listFile/${id}`
         );
         const jsonRes = await response.json();
         const FileData = jsonRes.success ? jsonRes.output : [];
@@ -126,7 +126,7 @@ export const home = new Elysia()
   )
   .get("/uploadPage", async({set, request})=>{
     try {
-      const response = await fetch("http://localhost:3000/api/StorageFolder");
+      const response = await fetch(`http://localhost:${process.env.PORT || 3000}/api/StorageFolder`);
       const jsonRes = await response.json();
       const FolderData = jsonRes.success ? jsonRes.output : [];
 
