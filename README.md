@@ -33,22 +33,12 @@ http://localhost:3000/
 
 ### ⚠ WORK IN PROGRESS 🔨
 
-## OPTIONAL ENV
-1. If you want to configure your hosting port, you can set it up in the .env prop file.
+## Configuring Environments
 
-Terminal:
-```
-mkdir .env
-```
+There is an example `.env.example` file in the root directory which you can copy and name it as `.env`. This file is used to store environment variables for the application.
 
-.env:
 ```
-PORT = 8000 
-```
-
-index.ts:
-```
-const key = process.env.SECRET_KEY
+cp .env.example .env
 ```
 
 ### MORE WORK IN PROGRESS 🎞
