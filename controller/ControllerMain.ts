@@ -141,7 +141,7 @@ export const upload = new Elysia()
             fileDirectory: t.String(),
         })
     })
-    .post('/api/uploadImage', async ({ body, set, redirect }) => {
+    .post('/api/uploadImage', async ({ body, set, redirect, request }) => {
         const { name, file, passKey, fileDirectory } = body;
         console.log(body);
         interface FileReturn {
@@ -179,12 +179,21 @@ export const upload = new Elysia()
                 SecretKey: passKey,
             }
             const success: boolean = await ImageCip(cryptoPayload);
+            
+            // Get the protocol (http or https)
+            const protocol = request.headers.get('x-forwarded-proto') || 'http';
+            // Get the host from the request headers
+            const host = request.headers.get('host') || 'localhost:3000';
+            // Construct the base URL dynamically
+            const baseUrl = `${protocol}://${host}`;
+            
             if (!success) {
                 console.error("Failed to upload data.")
-                return redirect(`http://localhost:3000/uploadPage?folder=${fileDirectory}`)
+                return redirect(`${baseUrl}/uploadPage?folder=${fileDirectory}`);
             }
+            
             set.status = 200;
-            return redirect(`http://localhost:3000/uploadPage?folder=${fileDirectory}`)
+            return redirect(`${baseUrl}/uploadPage?folder=${fileDirectory}`);
         } catch (error) {
             set.status = 500;
             return {
@@ -244,4 +253,3 @@ export const upload = new Elysia()
           imageID: t.String()
         })
       });
-    
