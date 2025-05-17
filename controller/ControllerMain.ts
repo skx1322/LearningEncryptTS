@@ -109,21 +109,21 @@ export const upload = new Elysia()
                 SecretKey: passKey,
             }
 
-        const check = await CipText(TextPlayload)
-        if (!check) {
-            set.status = 400;
+            const check = await CipText(TextPlayload)
+            if (!check) {
+                set.status = 400;
+                return {
+                    success: false,
+                    message: `Failed to decrypt the file ${name}.`,
+                    status: set.status,
+                }
+            }
+            set.status = 200;
             return {
-                success: false,
-                message: `Failed to decrypt the file ${name}.`,
+                success: true,
+                message: `Successfully decrypt the file ${name}.`,
                 status: set.status,
             }
-        }
-        set.status = 200;
-        return {
-            success: true,
-            message: `Successfully decrypt the file ${name}.`,
-            status: set.status,
-        }
         } catch (error) {
             set.status = 500;
             return {
@@ -181,10 +181,10 @@ export const upload = new Elysia()
             const success: boolean = await ImageCip(cryptoPayload);
             if (!success) {
                 console.error("Failed to upload data.")
-                return redirect(`http://localhost:3000/uploadPage?folder=${fileDirectory}`)
+                return redirect(`/uploadPage?folder=${fileDirectory}`)
             }
             set.status = 200;
-            return redirect(`http://localhost:3000/uploadPage?folder=${fileDirectory}`)
+            return redirect(`/uploadPage?folder=${fileDirectory}`)
         } catch (error) {
             set.status = 500;
             return {
@@ -224,24 +224,23 @@ export const upload = new Elysia()
             folderDirectory: t.String()
         })
     })
-      .get("/imagehost/:storage/:folder/:imageID", async({params, set})=>{
-        const {storage, folder, imageID} = params;
+    .get("/imagehost/:storage/:folder/:imageID", async ({ params, set }) => {
+        const { storage, folder, imageID } = params;
         const imagePath = `./${storage}/${folder}/${imageID}`;
-    
+
         if (!existsSync(imagePath)) {
-          set.status = 404;
-          return { error: "Image not found" };
+            set.status = 404;
+            return { error: "Image not found" };
         }
 
         set.status = 200
         set.headers["Content-Type"] = "image/png"
 
         return createReadStream(imagePath);
-      },{
+    }, {
         params: t.Object({
-          storage: t.String(),
-          folder: t.String(),
-          imageID: t.String()
+            storage: t.String(),
+            folder: t.String(),
+            imageID: t.String()
         })
-      });
-    
+    });
