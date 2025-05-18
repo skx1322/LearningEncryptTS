@@ -14,6 +14,10 @@ const SummaryApi = {
         url: `api/listFile`,
         method: `post`,
     },
+    imagePreview: {
+        url: `/imagehost`,
+        method: `get`,
+    },
 };
 
 export default SummaryApi;
