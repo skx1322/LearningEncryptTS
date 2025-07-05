@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash } from "crypto";
-import { CryptoGenSchema, DecryptFileSchema, EncryptFileSchema } from "../fileFormatTempalte";
+import { CryptoGenSchema, DecryptFileSchema, EncryptFileSchema } from "../fileFormatTemplate";
 
 export async function deriveKey(SecretKey: string): Promise<Buffer>{
     return createHash("sha256").update(SecretKey).digest();

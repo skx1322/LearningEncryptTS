@@ -1,5 +1,5 @@
 import { getFileExtension } from "elysia/dist/universal/file";
-import { FileFormatEnum, reverseExtension, StandardFileSchema, StandardFSObject } from "../fileFormatTempalte";
+import { FileFormatEnum, reverseExtension, StandardFileSchema, StandardFSObject } from "../fileFormatTemplate";
 
 export function fileSplit(filePath: string): StandardFSObject {
     const firstSplit = filePath.split("/");

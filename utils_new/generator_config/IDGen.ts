@@ -1,5 +1,5 @@
 import { randomUUIDv7 } from "bun";
-import { SegmentLimit, UUIDFormat } from "../fileFormatTempalte";
+import { SegmentLimit, UUIDFormat } from "../fileFormatTemplate";
 
 export async function UUIDHex(GenType: UUIDFormat = "hex", SegmentLength: SegmentLimit = 0): Promise<string> {
     const id = randomUUIDv7(GenType) || "";

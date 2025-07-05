@@ -1,4 +1,4 @@
-import { StandardFSObject } from "../fileFormatTempalte";
+import { StandardFSObject } from "../fileFormatTemplate";
 
 export async function fileDeleteDirect(filePath: string): Promise<StandardFSObject> {
     try {

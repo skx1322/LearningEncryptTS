@@ -1,5 +1,5 @@
 import { resolve } from "bun";
-import { FileUploadSchema, StandardFileSchema, StandardFSObject } from "../fileFormatTempalte";
+import { FileUploadSchema, StandardFileSchema, StandardFSObject } from "../fileFormatTemplate";
 import { UUIDHex } from "../generator_config/IDGen";
 
 async function fileToBuffer(file: File): Promise<Buffer> {

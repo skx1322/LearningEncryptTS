@@ -1,5 +1,5 @@
 import { randomBytes } from "crypto";
-import { CryptoGenSchema, FileCryptoSchema, FileExtension, FileFormatEnum, getExtension, StandardFSObject } from "../fileFormatTempalte";
+import { CryptoGenSchema, FileCryptoSchema, FileExtension, FileFormatEnum, getExtension, StandardFSObject } from "../fileFormatTemplate";
 import { deriveKey, FileEncrypt } from "./crypto_config";
 
 export async function fileEncrypt(FileObject: FileCryptoSchema): Promise<StandardFSObject> {
